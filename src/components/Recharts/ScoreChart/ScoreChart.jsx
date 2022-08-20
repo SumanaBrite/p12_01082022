@@ -1,60 +1,48 @@
 import './ScoreChart.css'
-import React, { useEffect, useState } from 'react';
-import { PieChart, Pie, Cell, Label, ResponsiveContainer, Legend } from "recharts";
-import { getUserInfos } from '../../../services/Api';
+import React from 'react';
+import { ResponsiveContainer, PieChart, Pie, Cell, Legend, Label } from 'recharts';
+import PropTypes from 'prop-types';
 
-
-export default function ScoreChart({ id }) {
-    const [data, setData] = useState([]);
-    const [score, setScore] = useState([]);
-
-    useEffect(() => {
-
-        const getData = async () => {
-            const res = await getUserInfos(id);
-            
-            setData(res.data);
-            let score = res.data.todayScore || res.data.score
-            setScore(data)
-            console.log(res.data)
-            console.log(score)
-        };
-        getData();
-
-    }, [id]);
-    console.log(score)
-
-
-    // useEffect(() => {
-    // 	const getData = async () => {
-    // 		const res = await getUserInfos(id);
-    //         let data = [
-    //             { name: "Score", value: res?.data?.score || res?.data?.todayScore },
-    //             { name: "Total", value: 1 }]
-
-    // 		// Formats data
-
-    // 		setData(data);
-    // 	};
-    // 	getData();
-    // }, [id]);
+/**
+ * A piechart chart showing user's score  using recharts.
+ * @Components
+ * @param {array} data - The score of a user 
+ */
+export default function ScoreChart({ data }) {
     return (
-        <div className='container-ScoreChart'>                <h4>Score</h4>
+        <div className='container-ScoreChart'>
+            {data.length && (
+                <ResponsiveContainer>
+                    <PieChart width={300} height={300}>
+                        <Pie
+                            data={data}
+                            innerRadius={73}
+                            outerRadius={85}
+                            startAngle={90}
+                            dataKey="value"
+                        >
+                            {data.map((entry, index) => {
+                                if (index === 0) {
+                                    return <Cell key={`cell-${index}`} fill="#FF0000" cornerRadius={10} />;
+                                }
+                                if (index === 1) {
+                                    return <Cell key={`cell-${index}`} fill="transparent" />;
+                                }
 
-            <ResponsiveContainer width="100%" height="100%">
-                <PieChart width={300} height={300}>
-                    <Pie
-                        data={score}
-                        dataKey='score'
-                        innerRadius={73}
-                        outerRadius={85}
-                        startAngle={90}
-                    >
+                            })}
 
-                    </Pie>
-                </PieChart>
-            </ResponsiveContainer>
+                            <Label className="circle-label" fill={"black"} width={99} position="center">
+                                {(data[0].value)} % de votre objectif
+                            </Label>
+                        </Pie>
+                    </PieChart>
+                </ResponsiveContainer>
+            )}
+
 
         </div>
     )
+}
+ScoreChart.prototype = {
+    dataa: PropTypes.array,
 }

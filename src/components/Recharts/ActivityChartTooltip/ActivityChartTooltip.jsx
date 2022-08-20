@@ -1,5 +1,6 @@
 import './ActivityChartTooltip.css'
 import React from 'react'
+import PropTypes from 'prop-types';
 
 export default function ActivityChartTooltip({ active, payload }) {
     if (active && payload && payload.length) {
@@ -12,3 +13,8 @@ export default function ActivityChartTooltip({ active, payload }) {
     }
     return null
   }
+
+ActivityChartTooltip.prototype = {
+  active : PropTypes.number,
+  payload : PropTypes.array,
+}

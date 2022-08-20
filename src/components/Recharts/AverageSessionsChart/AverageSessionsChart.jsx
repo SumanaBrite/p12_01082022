@@ -2,6 +2,7 @@ import './AverageSessionsChart.css'
 import React, { useEffect, useState } from 'react';
 import { getUserAverageSessions } from '../../../services/Api';
 import AverageSessionsChartTooltip from './AverageSessionsChartTooltip';
+import PropTypes from 'prop-types';
 
 import {
   LineChart,
@@ -12,14 +13,19 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
+/**
+ * A line chart showing user's average sessions using recharts.
+ * @Components
+ * @param {number} id - The unique id of user passed in URL
+ */
 export default function AverageSessionsChart({ id }) {
   const [data, setData] = useState([]);
 
   useEffect(() => {
     const getData = async () => {
       const request = await getUserAverageSessions(id);
+      const sessionLength = request.data.sessions.length;
       setData(request.data.sessions);
-      console.log(request.data.sessions)
     };
     getData();
   }, [id]);
@@ -69,4 +75,8 @@ export default function AverageSessionsChart({ id }) {
       </ResponsiveContainer>
     </div>
   )
+}
+
+AverageSessionsChart.prototype = {
+  id : PropTypes.number,
 }

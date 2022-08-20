@@ -1,7 +1,6 @@
 .tooltipActivity{
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
     align-items: center;
     width: 39px;
     height: 63px;

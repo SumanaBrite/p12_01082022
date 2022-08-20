@@ -41,7 +41,6 @@ export const getUserPerformance = async (id) => {
  * @returns {object} Response
  */
 export const getUserActivity = async (id) => {
-	console.log(id)
 	try {
 		const res = await instance.get(`/${id}/activity`);
 		return res.data;

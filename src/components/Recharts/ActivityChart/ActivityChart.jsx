@@ -1,18 +1,21 @@
 import './ActivityChart.css'
 import React, { useState, useEffect } from 'react';
 import { getUserActivity } from '../../../services/Api';
-import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import ActivityChartTooltip from '../ActivityChartTooltip/ActivityChartTooltip';
+import PropTypes from 'prop-types';
 
+/**
+ * A bar chart showing user activity using recharts.
+ * @Components
+ * @param {number} id - The unique id of user passed in URL
+ */
 
 export default function ActivityChart({ id }) {
 	const [data, setData] = useState([]);
-	
-
 	useEffect(() => {
 		const getData = async () => {
 			const request = await getUserActivity(id);
-			console.log(request);
 
 			// for (
 			// 	let i = 1;
@@ -25,12 +28,11 @@ export default function ActivityChart({ id }) {
 			// 	};
 			// }
 			// ------------------------------------
-			
-	// for (let i = 0; i < data?.length; i++) {
-	// 	data[i].day = [1, 2, 3, 4, 5, 6, 7]
-	//   }
+
+			// for (let i = 0; i < data?.length; i++) {
+			// 	data[i].day = [1, 2, 3, 4, 5, 6, 7]
+			//   }
 			setData(request.data.sessions);
-			console.log(request.data.sessions);
 		};
 		getData();
 	}, [id]);
@@ -56,33 +58,38 @@ export default function ActivityChart({ id }) {
 			<ResponsiveContainer width="100%" height="100%">
 				<BarChart
 					data={data}
-					// margin={{
-					// 	top: 5,	
-					// }}
-					// barGap={3}
-					// barCategoryGap={4}
-
+					margin= "2px"
+					
 				>
-					<CartesianGrid strokeDasharray="" />
-					<XAxis dataKey="day" />
+					<CartesianGrid strokeDasharray="3 3" />
+					<XAxis dataKey="" />
 					<YAxis
-					yAxisId='kg'
-					datakey='kilogram'
-					orientation='right'
-					axisLine={false}
-					tickLine={false}
-					  />
-					<YAxis 
-					yAxisId='cal'
-					datakey='calories'/>
-					<Tooltip content={<ActivityChartTooltip/> } />
+						yAxisId='kg'
+						datakey='kilogram'
+						orientation='right'
+						axisLine={false}
+						tickLine={false}
+						tickCount={3}
+
+					/>
+					<YAxis
+						yAxisId='cal'
+						datakey='calories'
+						orientation='false'
+						axisLine={false}
+						tickLine={false}
+						hide={true}
+
+						/>
+						
+					<Tooltip content={<ActivityChartTooltip />} />
 					<Legend />
-					<Bar 
+					<Bar
 						yAxisId='kg'
 						dataKey='kilogram'
 						fill='#282D30'
 						barSize={7}
-						radius={[50, 50, 0, 0]}/>
+						radius={[50, 50, 0, 0]} />
 					<Bar yAxisId='cal'
 						dataKey='calories'
 						fill='#E60000'
@@ -92,4 +99,8 @@ export default function ActivityChart({ id }) {
 			</ResponsiveContainer>
 		</>
 	)
+}
+
+ActivityChart.prototype = {
+	id: PropTypes.string.isRequired,
 }

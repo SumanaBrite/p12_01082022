@@ -1,5 +1,6 @@
 import './Points.css'
 import React from 'react'
+import PropTypes from 'prop-types';
 
 export default function Points({img,kcal, catogery}) {
     return(
@@ -13,10 +14,12 @@ export default function Points({img,kcal, catogery}) {
                         <p className='text-icon'>{catogery}</p>
                     </div>
                 </div>
-            </div>
-    
-        
-        
-        
+            </div>       
     )
+}
+
+Points.propTypes =  {
+    img : PropTypes.string.isRequired,
+    kcal: PropTypes.number.isRequired,
+    catogery: PropTypes.string.isRequired,
 }

@@ -1,6 +1,5 @@
 import './Dashboard.css'
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { getUserInfos } from '../../services/Api';
 import { Navigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
@@ -10,24 +9,20 @@ import ScoreChart from '../Recharts/ScoreChart/ScoreChart';
 import PerformanceChart from '../Recharts/PerformanceChart/PerformanceChart';
 import Points from '../../components/Points/Points'
 
-export default function Dashboard({ match }) {
+export default function Dashboard() {
 
 	const [data, setData] = useState([]);
 	const [score, setScore] = useState([]);
-	// const { userInfos, keyData } = data;
 	const { id } = useParams();
-	console.log(id)
 	useEffect(() => {
 		const getData = async () => {
 			const request = await getUserInfos(id);
-			console.log(request.data)
 			if (!request) return <Navigate to='/404' />;
 			setData(request.data);
 			setScore([
-				{ score: request.data.todayScore || request.data.score },
+				{ value: request.data.todayScore  || request.data.score  },
 				{
-					score:
-						1 - request.data.todayScore || 1 - request.data.score,
+					value:1
 				},
 			]);
 		};
@@ -40,7 +35,7 @@ export default function Dashboard({ match }) {
 				<h1>
 					Bonjour <span>{data.userInfos.firstName}</span>
 				</h1>
-				<p>Félicitations ! Vous avez explosé vos objectifs hier 👏</p>
+				<p>Félicitations ! Vous avez explosé vos objectifs hier <span role="img" aria-label="emoji">👏</span></p>
 			</div>
 			<div className='container-charts'>
 				<div className='left-chart'>
@@ -48,7 +43,7 @@ export default function Dashboard({ match }) {
 					<div className='container-smallCharts'>
 						<AverageSessionsChart id={id}/>
 						<PerformanceChart id={id} />
-						<ScoreChart id={id} score={data.score || data.todayScore}/>
+						<ScoreChart id={id} data={score}/>
 					</div>
 
 				</div>
@@ -65,6 +60,3 @@ export default function Dashboard({ match }) {
 	)
 }
 
-Dashboard.propTypes = {
-	match: PropTypes.object,
-};
